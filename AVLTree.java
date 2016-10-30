@@ -1,19 +1,20 @@
 public class AVLTree{
 
-   private Node root; // first node of tree
+   private AVLNode root; // first node of tree
    
    public AVLTree(){ 
-          root = null; // no nodes in tree yet
+          
+       root = null; // no nodes in tree yet
    }            
 
 
-   public Node getRoot(){
+   public AVLNode getRoot(){
           return root;
    }
    
    
    // RECURSIVE find node with given key
-   public Node find(int key, Node y){
+   public AVLNode find(int key, AVLNode y){
 
        if (y == null){
            
@@ -33,10 +34,10 @@ public class AVLTree{
 
        }
       
-       } 
+    } 
     
      // return height of tree rooted at x
-     public int height(Node x){ 
+     public int height(AVLNode x){ 
      
       if (x == null) 
              
@@ -46,74 +47,75 @@ public class AVLTree{
      }
      
      
-    public Node rotatewithleft(Node c){
-     Node p;  // left child of c
+    public AVLNode rotatewithleft(AVLNode c){
+       
+       AVLNode p;  // left child of c
+       
+       p = c.left;
+       c.left = p.right;
+       p.right = c;
 
-     p = c.left;
-     c.left = p.right;
-     p.right = c;
+       c.height = Math.max(height(c.left), height(c.right)) + 1;
+       p.height = Math.max(height(p.left), height(p.right)) + 1;
 
-     c.height = Math.max(height(c.left), height(c.right)) + 1;
-     p.height = Math.max(height(p.left), height(p.right)) + 1;
-
-     return p;
+       return p;
 
    }
      
-    public Node rotatewithright(Node c){
+    public AVLNode rotatewithright(AVLNode c){
 
-     Node p;  // right child of c
+       AVLNode p;  // right child of c
 
-     p = c.right;
-     c.right = p.left;
-     p.left = c;
+       p = c.right;
+       c.right = p.left;
+       p.left = c;
 
-     c.height = Math.max(height(c.left), height(c.right)) + 1;
-     p.height = Math.max(height(p.left), height(p.right)) + 1;
+       c.height = Math.max(height(c.left), height(c.right)) + 1;
+       p.height = Math.max(height(p.left), height(p.right)) + 1;
 
-     return p;
-
-   }
-
-   public Node doublerotatewithleft(Node c){
-
-     Node tempNode;
-
-     c.left = rotatewithright(c.left);
-     tempNode = rotatewithleft(c);
-
-     return tempNode;
+       return p;
 
    }
-   
-   public Node doublerotatewithright(Node c){
 
-    Node tempNode;
+   public AVLNode doublerotatewithleft(AVLNode c){
 
-    c.right = rotatewithleft(c.right);
-    tempNode = rotatewithright(c);
+       AVLNode tempAVLNode;
 
-    return tempNode;
+       c.left = rotatewithright(c.left);
+       tempAVLNode = rotatewithleft(c);
+
+       return tempAVLNode;
 
    }
    
-   public Node AVLinsert(Node newNode, Node rootOfsubtree){
+   public AVLNode doublerotatewithright(AVLNode c){
+
+      AVLNode tempAVLNode;
+
+      c.right = rotatewithleft(c.right);
+      tempAVLNode = rotatewithright(c);
+
+      return tempAVLNode;
+
+   }
+   
+   public AVLNode AVLinsert(AVLNode newAVLNode, AVLNode rootOfsubtree){
     
-    Node newrootOfsubtree = rootOfsubtree;  
+    AVLNode newrootOfsubtree = rootOfsubtree;  
 
-   if (newNode.data < rootOfsubtree.data){
+   if (newAVLNode.data < rootOfsubtree.data){
      if (rootOfsubtree.left == null){
 
-         rootOfsubtree.left = newNode;  //attach new node as leaf
+         rootOfsubtree.left = newAVLNode;  //attach new node as leaf
 
        }
      else {
 
-         rootOfsubtree.left = AVLinsert(newNode, rootOfsubtree.left);   // branch left
+         rootOfsubtree.left = AVLinsert(newAVLNode, rootOfsubtree.left);   // branch left
 
          if ((height(rootOfsubtree.left) - height(rootOfsubtree.right)) == 2) {
 
-            if (newNode.data < rootOfsubtree.left.data) {
+            if (newAVLNode.data < rootOfsubtree.left.data) {
 
               newrootOfsubtree=rotatewithleft(rootOfsubtree);
 
@@ -128,20 +130,20 @@ public class AVLTree{
    } 
    
     
-   else if (newNode.data > rootOfsubtree.data)/*Branch right*/{  
+   else if (newAVLNode.data > rootOfsubtree.data)/*Branch right*/{  
    
         if (rootOfsubtree.right == null){
 
-            rootOfsubtree.right = newNode;   // attach new node as leaf
+            rootOfsubtree.right = newAVLNode;   // attach new node as leaf
 
        }
      else {
 
-           rootOfsubtree.right = AVLinsert(newNode, rootOfsubtree.right);  // branch right
+           rootOfsubtree.right = AVLinsert(newAVLNode, rootOfsubtree.right);  // branch right
 
            if ((height(rootOfsubtree.right) - height(rootOfsubtree.left)) == 2) {
 
-            if (newNode.data > rootOfsubtree.right.data) {
+            if (newAVLNode.data > rootOfsubtree.right.data) {
 
               newrootOfsubtree=rotatewithright(rootOfsubtree);
 
@@ -155,19 +157,38 @@ public class AVLTree{
         } 
    }  
 
-   else System.out.println("Duplicate Key");
+   // else System.out.println("Duplicate Key");
 
    // Update the height
 
    if ((rootOfsubtree.left == null) && (rootOfsubtree.right != null))
+     
       rootOfsubtree.height = rootOfsubtree.right.height + 1;
+   
    else if ((rootOfsubtree.right == null) && (rootOfsubtree.left != null))
+   
       rootOfsubtree.height = rootOfsubtree.left.height + 1;
+   
    else
+   
       rootOfsubtree.height = Math.max(height(rootOfsubtree.left), height(rootOfsubtree.right)) + 1;
 
    return newrootOfsubtree; // return new root of this subtree
 
    }
+   
+   public void insert(int id){
+         
+         AVLNode newNode = new AVLNode(id);    // make new node
+
+         if(root==null)
+        
+         root = newNode;
+         
+         else{
+
+           root=AVLinsert(newNode, root); 
+         }
+   }     
      
 }

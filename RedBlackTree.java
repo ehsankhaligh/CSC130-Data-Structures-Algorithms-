@@ -10,7 +10,7 @@ public class RedBlackTree{
      
      static {
      
-         RedBlackTree RBT = new RedBlackTree(0);
+         RedBlackTree RBT = new RedBlackTree(-1);
          emptyNode.left = emptyNode;
          emptyNode.right = emptyNode;
      }
@@ -27,18 +27,17 @@ public class RedBlackTree{
          
       }
       
-      public boolean isEmpty(){
+     public boolean isEmpty(){
         
          return headerNode.right == emptyNode;
      }
     
-    //Not sure we have to keep or not// ASK?
      public void makeEmpty(){
      
          headerNode.right = emptyNode;
      }
 
-      public void insert(int item ){
+     public void insert(int item ){
          
          currentNode = parentNodeNode = grandNode = headerNode;
          emptyNode.data = item;
@@ -81,6 +80,7 @@ public class RedBlackTree{
           currentNode.right.color = BLACK;
  
          if (parentNodeNode.color == RED){
+             
              // Have to rotate
              grandNode.color = RED;
              if (item < grandNode.data != item < parentNodeNode.data)
@@ -186,5 +186,6 @@ public class RedBlackTree{
          }
          
      }
-           
+     
+      
      }

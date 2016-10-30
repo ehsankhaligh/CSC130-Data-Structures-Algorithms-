@@ -16,6 +16,7 @@ public class RBTreeNode{
          data = x;
          color = 1;
          
-     }    
-
+     }   
+     
+    
 }

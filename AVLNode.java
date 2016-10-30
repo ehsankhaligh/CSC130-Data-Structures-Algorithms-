@@ -1,11 +1,11 @@
-public class Node
-   {
+public class AVLNode{
+   
    public int data;  
    public int height;           
-   public Node left;        
-   public Node right;        
+   public AVLNode left;        
+   public AVLNode right;        
 
-   public Node(int id){
+   public AVLNode(int id){
       data = id;
       height = 0;
       left = null;
